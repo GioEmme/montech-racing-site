@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon-Tech Racing — Carrozzeria</title>
+  <meta name="description" content="Carrozzerie RC Mon-Tech Racing: scheda tecnica, contenuto del kit e galleria.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261120163138">
+  <link rel="stylesheet" href="css/model.css?v=202611201626">
+</head>
+<body class="page-model">
+
+  <header class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo.png" alt="Mon-Tech Racing"></a>
+    <nav class="nav__menu" aria-label="Principale">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+    </nav>
+    <a class="nav__cta" href="distributori.html">Distributori</a>
+    <button class="nav__toggle" aria-expanded="false" aria-controls="mnav" aria-label="Apri menu"><span></span><span></span></button>
+  </header>
+
+  <div class="mnav" id="mnav" hidden>
+    <nav aria-label="Menu">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="distributori.html">Distributori</a>
+    </nav>
+    <p class="mnav__foot">Made in Italy · Scandiano</p>
+  </div>
+
+  <main>
+    <!-- 1. HERO -->
+    <section class="mhero" id="mhero">
+      <canvas class="mhero__bg" id="mheroBg" aria-hidden="true"></canvas>
+      <div class="mhero__bigname" id="bigName" aria-hidden="true"></div>
+
+      <div class="stage">
+        <div class="car" id="car">
+          <div class="car__spin" id="carSpin">
+            <canvas class="car__shadow" id="carShadow" aria-hidden="true"></canvas>
+            <img class="car__lines" id="carLines" alt="" draggable="false">
+            <img class="car__body" id="carBody" alt="" draggable="false">
+            <div class="car__scan" id="carScan" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mhero__copy">
+        <a class="crumb" href="carrozzerie.html"><span aria-hidden="true">←</span> Tutte le carrozzerie</a>
+        <p class="mhero__tag" id="tag"></p>
+        <h1 class="mhero__title" id="title"></h1>
+        <p class="mhero__lead" id="lead"></p>
+        <div class="mhero__actions">
+          <a class="btn btn--primary" href="distributori.html">Trova un distributore <span aria-hidden="true">→</span></a>
+          <a class="btn btn--ghost" href="#galleria">Galleria</a>
+        </div>
+      </div>
+
+      <dl class="mhero__stats" id="stats"></dl>
+      <a class="mhero__down" href="#storia" aria-label="Scorri ai dettagli"><span></span></a>
+    </section>
+
+    <!-- 3. STORIA -->
+    <section class="sec story" id="storia">
+      <div class="story__aside reveal">
+        <p class="eyebrow" id="storyEyebrow"></p>
+        <h2 class="sec__title" id="storyTitle"></h2>
+      </div>
+      <div class="story__body">
+        <div class="story__text reveal" id="storyText"></div>
+        <ol class="story__points" id="storyPoints"></ol>
+      </div>
+    </section>
+
+    <!-- 4. SCHEDA TECNICA -->
+    <section class="sec specs" id="scheda">
+      <header class="sec__head reveal">
+        <p class="eyebrow">Scheda tecnica</p>
+        <h2 class="sec__title">I numeri</h2>
+      </header>
+      <div class="specs__layout">
+        <dl class="specs__grid reveal" id="specGrid"></dl>
+        <div class="specs__kit reveal" id="kitBox">
+          <h3>Nel kit</h3>
+          <ul id="kitList"></ul>
+          <p class="specs__note" id="specNote"></p>
+        </div>
+      </div>
+      <p class="specs__made reveal"><span class="flag" aria-hidden="true"><i></i><i></i><i></i></span> Ideata, progettata e prodotta in Italia · Scandiano</p>
+    </section>
+
+    <!-- 5. GALLERIA -->
+    <section class="sec gallery" id="galleria">
+      <header class="sec__head sec__head--row reveal">
+        <div>
+          <p class="eyebrow">Galleria</p>
+          <h2 class="sec__title">Da ogni angolo</h2>
+        </div>
+        <div class="gallery__nav">
+          <button class="arrow-sm" id="galPrev" aria-label="Foto precedenti">←</button>
+          <button class="arrow-sm" id="galNext" aria-label="Foto successive">→</button>
+        </div>
+      </header>
+      <div class="gallery__track" id="galTrack"></div>
+    </section>
+
+    <!-- 6. PROSSIMO MODELLO -->
+    <section class="next" id="next">
+      <a class="next__card" id="nextCard" href="#">
+        <span class="eyebrow">Prossimo modello</span>
+        <span class="next__name" id="nextName"></span>
+        <span class="next__tag" id="nextTag"></span>
+        <img class="next__img" id="nextImg" alt="">
+        <span class="next__go" aria-hidden="true">→</span>
+      </a>
+      <a class="next__prev" id="prevLink" href="#"><span aria-hidden="true">←</span> <span id="prevName"></span></a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <img src="assets/logo.png" alt="Mon-Tech Racing" height="26">
+    <p>© Mon-Tech Racing di Montecchi Alberto &amp; C. SAS · P.IVA 02880600354</p>
+    <nav>
+      <a href="distributori.html">Distributori</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="https://www.iubenda.com/privacy-policy/74611107">Privacy</a>
+    </nav>
+  </footer>
+
+  <!-- lightbox galleria -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ingrandita" hidden>
+    <img id="lbImg" alt="">
+    <button class="lightbox__close" id="lbClose" aria-label="Chiudi">×</button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" aria-label="Foto precedente">←</button>
+    <button class="lightbox__nav lightbox__nav--next" id="lbNext" aria-label="Foto successiva">→</button>
+    <p class="lightbox__count" id="lbCount"></p>
+  </div>
+
+  <script src="js/nav.js?v=1"></script>
+  <script src="js/models.js?v=202611201626"></script>
+  <script src="js/stage.js?v=202611201626"></script>
+  <script src="js/model.js?v=202611201626"></script>
+</body>
+</html>

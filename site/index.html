@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon-Tech Racing — Carrozzerie RC</title>
+  <meta name="description" content="Mon-Tech Racing: carrozzerie per automodelli RC elettrici e a scoppio. Made in Italy dal 2006.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261120163138">
+</head>
+<body>
+
+  <header class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo.png" alt="Mon-Tech Racing"></a>
+    <nav class="nav__menu" aria-label="Principale">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+    </nav>
+    <a class="nav__cta" href="distributori.html">Distributori</a>
+    <button class="nav__toggle" aria-expanded="false" aria-controls="mnav" aria-label="Apri menu"><span></span><span></span></button>
+  </header>
+
+  <div class="mnav" id="mnav" hidden>
+    <nav aria-label="Menu">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="distributori.html">Distributori</a>
+    </nav>
+    <p class="mnav__foot">Made in Italy · Scandiano</p>
+  </div>
+
+  <section class="hero" id="hero" aria-roledescription="carousel" aria-label="Modelli in evidenza">
+    <canvas class="hero__bg" id="heroBg" aria-hidden="true"></canvas>
+    <div class="hero__glow" aria-hidden="true"></div>
+
+    <!-- nome gigante sullo sfondo -->
+    <div class="hero__bigname" id="bigName" aria-hidden="true"></div>
+
+    <!-- palco prospettico -->
+    <div class="stage" id="stage">
+      <div class="car" id="car">
+        <div class="car__spin" id="carSpin">
+          <canvas class="car__shadow" id="carShadow" aria-hidden="true"></canvas>
+          <img class="car__lines" id="carLines" alt="" draggable="false">
+          <img class="car__body" id="carBody" alt="" draggable="false">
+          <div class="car__scan" id="carScan" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUD sinistra -->
+    <div class="hud hud--left">
+      <div class="hud__index"><span id="idxCur">01</span><i></i><span id="idxTot">02</span></div>
+      <p class="hud__tag" id="modelTag"></p>
+      <h1 class="hud__title" id="modelName" aria-live="polite"></h1>
+      <p class="hud__lead" id="modelLead"></p>
+      <div class="hud__actions">
+        <a class="btn btn--primary" id="modelLink" href="#">Scopri il modello <span aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href="carrozzerie.html">Tutte le carrozzerie</a>
+        <button class="btn btn--ghost btn--specs" id="specOpen" aria-controls="spec">Specifiche</button>
+      </div>
+    </div>
+
+    <!-- linea di richiamo card -> auto -->
+    <svg class="callout" id="callout" aria-hidden="true">
+      <polyline id="calloutLine" fill="none" />
+      <circle id="calloutDot" r="4" />
+      <circle id="calloutRing" r="4" fill="none" />
+    </svg>
+
+    <!-- scheda tecnica flottante -->
+    <aside class="spec" id="spec" aria-label="Scheda tecnica del modello">
+      <div class="spec__card" id="specCard">
+        <button class="spec__close" id="specClose" aria-label="Chiudi scheda">×</button>
+        <header class="spec__head">
+          <span class="spec__label">Scheda tecnica</span>
+          <span class="spec__code" id="specCode"></span>
+        </header>
+        <h2 class="spec__name" id="specName"></h2>
+        <p class="spec__tag" id="specTag"></p>
+        <dl class="spec__grid" id="specGrid"></dl>
+        <div class="spec__kit" id="specKitWrap">
+          <h3>Nel kit</h3>
+          <ul id="specKit"></ul>
+        </div>
+        <p class="spec__note" id="specNote"></p>
+        <footer class="spec__foot">
+          <span>100% Made in Italy · Scandiano</span>
+          <a id="specLink" href="#">Scheda completa <span aria-hidden="true">→</span></a>
+        </footer>
+      </div>
+    </aside>
+
+    <!-- controlli carousel -->
+    <div class="dock" id="dock" role="tablist" aria-label="Scegli il modello"></div>
+    <button class="arrow arrow--prev" id="prev" aria-label="Modello precedente">←</button>
+    <button class="arrow arrow--next" id="next" aria-label="Modello successivo">→</button>
+
+    <div class="hero__scroll" aria-hidden="true"><span></span>scroll</div>
+  </section>
+
+  <script src="js/nav.js?v=1"></script>
+  <script src="js/models.js?v=202611201626"></script>
+  <script src="js/stage.js?v=202611201626"></script>
+  <script src="js/hero.js?v=202611201626"></script>
+</body>
+</html>

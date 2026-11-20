@@ -1,0 +1,15 @@
+# sistema
+.DS_Store
+__pycache__/
+*.pyc
+
+# impostazioni locali dell'editor / di Claude Code
+.claude/
+
+# Vercel (cartella creata dalla CLI)
+.vercel/
+
+# prove di scontorno nella radice (non servono al sito)
+/camaro_body.png
+/huracan_body.png
+/camaro_prima_dopo.png

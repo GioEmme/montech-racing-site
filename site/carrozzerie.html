@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrozzerie — Mon-Tech Racing</title>
+  <meta name="description" content="Tutte le carrozzerie RC Mon-Tech Racing per categoria: GT, LMH, Touring, Mini, FWD, Rally, Oval e Pan Car.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261120163138">
+  <link rel="stylesheet" href="css/model.css?v=202611201626">
+  <link rel="stylesheet" href="css/carrozzerie.css?v=202611201628">
+</head>
+<body class="page-model page-list">
+
+  <header class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo.png" alt="Mon-Tech Racing"></a>
+    <nav class="nav__menu" aria-label="Principale">
+      <a href="carrozzerie.html" aria-current="page">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+    </nav>
+    <a class="nav__cta" href="distributori.html">Distributori</a>
+    <button class="nav__toggle" aria-expanded="false" aria-controls="mnav" aria-label="Apri menu"><span></span><span></span></button>
+  </header>
+
+  <div class="mnav" id="mnav" hidden>
+    <nav aria-label="Menu">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="distributori.html">Distributori</a>
+    </nav>
+    <p class="mnav__foot">Made in Italy · Scandiano</p>
+  </div>
+
+  <main>
+    <section class="lhead" id="lhead">
+      <canvas class="lhead__bg" id="lheadBg" aria-hidden="true"></canvas>
+      <div class="lhead__copy">
+        <p class="eyebrow">Catalogo</p>
+        <h1 class="lhead__title">Carrozzerie</h1>
+        <p class="lhead__sub"><b id="countAll"></b> carrozzerie in policarbonato, progettate e stampate a Scandiano. Scegli la categoria del tuo telaio.</p>
+      </div>
+    </section>
+
+    <div class="filters" id="filters" role="toolbar" aria-label="Filtra per categoria"></div>
+
+    <section class="list" aria-live="polite">
+      <p class="list__count" id="listCount"></p>
+      <div class="grid" id="grid"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <img src="assets/logo.png" alt="Mon-Tech Racing" height="26">
+    <p>© Mon-Tech Racing di Montecchi Alberto &amp; C. SAS · P.IVA 02880600354</p>
+    <nav>
+      <a href="distributori.html">Distributori</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="https://www.iubenda.com/privacy-policy/74611107">Privacy</a>
+    </nav>
+  </footer>
+
+  <script src="js/nav.js?v=1"></script>
+  <script src="js/models.js?v=202611201626"></script>
+  <script src="js/stage.js?v=202611201626"></script>
+  <script src="js/carrozzerie.js?v=202611201626"></script>
+</body>
+</html>

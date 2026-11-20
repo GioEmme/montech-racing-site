@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Distributori — Mon-Tech Racing</title>
+  <meta name="description" content="I distributori ufficiali Mon-Tech Racing nel mondo: Europa, Americhe, Africa, Asia e Oceania.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/model.css?v=4">
+  <link rel="stylesheet" href="css/catalog.css?v=170541">
+  <link rel="stylesheet" href="css/distributori.css?v=170541">
+</head>
+<body class="page-model page-dist">
+
+  <header class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo.png" alt="Mon-Tech Racing"></a>
+    <nav class="nav__menu" aria-label="Principale">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+    </nav>
+    <a class="nav__cta" href="distributori.html" aria-current="page">Distributori</a>
+    <button class="nav__toggle" aria-expanded="false" aria-controls="mnav" aria-label="Apri menu"><span></span><span></span></button>
+  </header>
+
+  <div class="mnav" id="mnav" hidden>
+    <nav aria-label="Menu">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="distributori.html">Distributori</a>
+    </nav>
+    <p class="mnav__foot">Made in Italy · Scandiano</p>
+  </div>
+
+  <main>
+    <section class="dhero">
+      <div class="dhero__copy">
+        <p class="eyebrow">Rete distributori</p>
+        <h1 class="dhero__title">Da Scandiano<br><span>al mondo.</span></h1>
+        <p class="dhero__sub">Le carrozzerie Mon-Tech nascono in Italia e arrivano in pista attraverso i nostri distributori ufficiali.</p>
+      </div>
+      <dl class="dhero__stats" id="stats">
+        <div><dt>Distributori</dt><dd data-n="0" id="nDist">0</dd></div>
+        <div><dt>Paesi</dt><dd id="nCountry">0</dd></div>
+        <div><dt>Continenti</dt><dd id="nCont">0</dd></div>
+      </dl>
+    </section>
+
+    <!-- mappa -->
+    <section class="wmap-sec" aria-label="Mappa dei distributori">
+      <div class="wmap-scroll" id="mapScroll">
+        <div class="wmap" id="wmap">
+          <canvas class="wmap__dots" id="dots" aria-hidden="true"></canvas>
+          <svg class="wmap__svg" id="mapSvg" viewBox="0 0 1000 367" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <defs>
+              <linearGradient id="arcGrad" x1="0" x2="1">
+                <stop offset="0" stop-color="#e11b22" />
+                <stop offset=".5" stop-color="#ffffff" />
+                <stop offset="1" stop-color="#52aa32" />
+              </linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+            </defs>
+            <g id="arcs"></g>
+            <g id="comets"></g>
+            <g id="pins"></g>
+            <g id="hq"></g>
+          </svg>
+          <div class="wmap__tips" id="tips"></div>
+        </div>
+      </div>
+      <p class="wmap__hint" aria-hidden="true">← trascina la mappa →</p>
+    </section>
+
+    <!-- filtri e ricerca -->
+    <div class="dtools" id="tools">
+      <div class="filters" id="filters" role="toolbar" aria-label="Filtra per continente"></div>
+      <button class="btn btn--primary dnear" id="near"><span class="dnear__dot" aria-hidden="true"></span>Trova il più vicino</button>
+    </div>
+    <p class="dnear__msg" id="nearMsg" role="status"></p>
+
+    <!-- elenco -->
+    <section class="dlist" id="list" aria-live="polite"></section>
+
+    <section class="dcta">
+      <div>
+        <p class="eyebrow">Nessun distributore vicino?</p>
+        <h2 class="sec__title">Scrivici, ti diciamo dove trovarci.</h2>
+        <p class="sec__sub">Vuoi portare Mon-Tech Racing nel tuo paese o nel tuo negozio? Parliamone.</p>
+      </div>
+      <a class="btn btn--primary" href="chisiamo.html#contatti">Contattaci <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <img src="assets/logo.png" alt="Mon-Tech Racing" height="26">
+    <p>© Mon-Tech Racing di Montecchi Alberto &amp; C. SAS · P.IVA 02880600354</p>
+    <nav>
+      <a href="distributori.html">Distributori</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="https://www.iubenda.com/privacy-policy/74611107">Privacy</a>
+    </nav>
+  </footer>
+
+  <script src="js/nav.js?v=2"></script>
+  <script src="js/distributors.js?v=1"></script>
+  <script src="js/distributori.js?v=170619"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlacKollection — Mon-Tech Racing</title>
+  <meta name="description" content="BlacKollection: borse e attrezzatura Mon-Tech Racing per il modellismo RC, testate e prodotte in Italia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/model.css?v=3">
+  <link rel="stylesheet" href="css/catalog.css?v=170541">
+  <link rel="stylesheet" href="css/gold.css?v=5">
+</head>
+<body class="page-model theme-gold" data-line="black">
+
+  <header class="nav">
+    <a class="nav__logo" href="index.html"><img src="assets/logo.png" alt="Mon-Tech Racing"></a>
+    <nav class="nav__menu" aria-label="Principale">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html" aria-current="page">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+    </nav>
+    <a class="nav__cta" href="distributori.html">Distributori</a>
+    <button class="nav__toggle" aria-expanded="false" aria-controls="mnav" aria-label="Apri menu"><span></span><span></span></button>
+  </header>
+
+  <div class="mnav" id="mnav" hidden>
+    <nav aria-label="Menu">
+      <a href="carrozzerie.html">Carrozzerie</a>
+      <a href="blackollection.html">BlacKollection</a>
+      <a href="optionparts.html">Option Parts</a>
+      <a href="chisiamo.html">Chi siamo</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="distributori.html">Distributori</a>
+    </nav>
+    <p class="mnav__foot">Made in Italy · Scandiano</p>
+  </div>
+
+  <main>
+    <section class="chero gold-hero">
+      <div class="gold-hero__bg" aria-hidden="true"></div>
+      <div class="gold-hero__beam" aria-hidden="true"></div>
+      <canvas class="gold-dust" id="dust" aria-hidden="true"></canvas>
+      <div class="gold-hero__product" data-depth="-26">
+        <img src="assets/acc/bag-3-boxes.webp" alt="Bag 3 Boxes della BlacKollection" draggable="false">
+      </div>
+      <p class="gold-hero__label" data-depth="-14" aria-hidden="true"><b>BK-02 · Bag 3 Boxes</b>Tre cassetti · sovrapponibile al Trolley</p>
+
+      <div class="chero__copy" data-depth="10">
+        <p class="eyebrow gold-eyebrow">La linea premium</p>
+        <h1 class="chero__title gold-title">Blac<span>K</span>ollection</h1>
+        <p class="chero__sub">Borse e attrezzatura per chi va in pista sul serio. <b><span id="countAll"></span> prodotti</b>, testati e prodotti tutti in Italia.</p>
+        <p class="gold-rule"><span>Mon-Tech Racing · Scandiano</span><span class="flag" aria-hidden="true"><i></i><i></i><i></i></span></p>
+      </div>
+    </section>
+
+    <div class="filters" id="filters" role="toolbar" aria-label="Filtra per tipo"></div>
+    <section class="list" aria-live="polite">
+      <p class="list__count" id="listCount"></p>
+      <div class="pgrid" id="grid"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <img src="assets/logo.png" alt="Mon-Tech Racing" height="26">
+    <p>© Mon-Tech Racing di Montecchi Alberto &amp; C. SAS · P.IVA 02880600354</p>
+    <nav>
+      <a href="distributori.html">Distributori</a>
+      <a href="chisiamo.html#contatti">Contatti</a>
+      <a href="https://www.iubenda.com/privacy-policy/74611107">Privacy</a>
+    </nav>
+  </footer>
+
+  <!-- scheda prodotto -->
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dName" hidden>
+    <div class="drawer__panel">
+      <button class="drawer__close" id="dClose" aria-label="Chiudi scheda">×</button>
+      <div class="drawer__img" id="dImgWrap">
+        <img id="dImg" alt="">
+        <div class="drawer__nav"><button id="dPrev" aria-label="Foto precedente">←</button><span id="dCount"></span><button id="dNext" aria-label="Foto successiva">→</button></div>
+      </div>
+      <div class="drawer__thumbs" id="dThumbs"></div>
+      <div class="drawer__body">
+        <p class="drawer__code" id="dCode"></p>
+        <h2 class="drawer__name" id="dName"></h2>
+        <div class="drawer__text" id="dText"></div>
+        <dl class="drawer__specs" id="dSpecs"></dl>
+        <div class="drawer__feat" id="dFeatWrap"><h3 id="dFeatTitle"></h3><ul id="dFeat"></ul></div>
+        <div class="drawer__actions">
+          <a class="btn btn--primary" href="distributori.html">Trova un distributore <span aria-hidden="true">→</span></a>
+          <button class="btn btn--ghost" id="dOther">Prodotto successivo <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/nav.js?v=1"></script>
+  <script src="js/accessories.js?v=1"></script>
+  <script src="js/catalog.js?v=1"></script>
+</body>
+</html>
