@@ -55,7 +55,8 @@
     Array.from({ length: n }, (_, i) => { const t = (i / n) * Math.PI * 2; return [cu + Math.cos(t) * ru, cv + Math.sin(t) * rv]; });
 
   /* ------------------------------------------------ pavimento animato */
-  function createFloor(canvas, { debug = false, reduce = false } = {}) {
+  // studio: 0..1, intensità dell'area chiara da studio fotografico dietro e sotto l'auto
+  function createFloor(canvas, { debug = false, reduce = false, studio = 0, vivid = 1, gridOnLight = 0 } = {}) {
     const ctx = canvas.getContext("2d");
     let W = 0, H = 0, DPR = 1;
     const bg = { speed: 1, target: 1, travel: 0, accent: [82, 170, 50], accentT: [82, 170, 50] };
@@ -126,19 +127,22 @@
         ctx.fillStyle = `rgba(${acc},0.024)`; ctx.fill();
       }
 
-      // griglia
-      const gs = 0.8, step = 0.6, fadeA = (base) => (u, w) => base * fade(u, w);
-      for (let kk = -18; kk <= 18; kk++) {
-        const vv = CV + kk * gs, pts = [];
-        for (let u = CU - R; u <= CU + R; u += step) pts.push([u, vv]);
-        polyline(h, pts, fadeA(0.16), "255,255,255");
-      }
-      const off = ((bg.travel % gs) + gs) % gs;
-      for (let kk = -19; kk <= 19; kk++) {
-        const uu = CU + kk * gs + off, pts = [];
-        for (let w = CV - R; w <= CV + R; w += step) pts.push([uu, w]);
-        polyline(h, pts, fadeA(0.11), "255,255,255");
-      }
+      // griglia (scorre con la pista); mask: 0..1 per punto del terreno
+      const gs = 0.8, step = 0.6;
+      const grid = (k, color, mask = () => 1) => {
+        for (let kk = -18; kk <= 18; kk++) {
+          const vv = CV + kk * gs, pts = [];
+          for (let u = CU - R; u <= CU + R; u += step) pts.push([u, vv]);
+          polyline(h, pts, (u, w) => 0.16 * k * fade(u, w) * mask(u, w), color);
+        }
+        const off = ((bg.travel % gs) + gs) % gs;
+        for (let kk = -19; kk <= 19; kk++) {
+          const uu = CU + kk * gs + off, pts = [];
+          for (let w = CV - R; w <= CV + R; w += step) pts.push([uu, w]);
+          polyline(h, pts, (u, w) => 0.11 * k * fade(u, w) * mask(u, w), color);
+        }
+      };
+      grid(vivid, "255,255,255");
 
       // scie parallele all'auto
       const alt = bg.accentT[0] > 150 ? "82,170,50" : "225,27,34";
@@ -147,7 +151,7 @@
         if (s.u - s.len > CU + R) Object.assign(s, spawn(false));
         const A = P(h, s.u, s.v), B = P(h, s.u - s.len * (0.6 + v * 0.25), s.v);
         if (A[2] <= 0.05 || B[2] <= 0.05) continue;
-        const a = fade(s.u, s.v) * (s.kind === "white" ? 0.5 : 1);
+        const a = Math.min(1, fade(s.u, s.v) * (s.kind === "white" ? 0.5 : 1) * vivid);
         if (a < 0.01) continue;
         const c = s.kind === "accent" ? acc : s.kind === "alt" ? alt : "255,255,255";
         const lg = ctx.createLinearGradient(A[0], A[1], B[0], B[1]);
@@ -155,6 +159,40 @@
         const C = P(h, s.u, s.v + 1), sc = Math.hypot(C[0] - A[0], C[1] - A[1]);
         ctx.strokeStyle = lg; ctx.lineWidth = Math.max(0.8, sc * 0.014); ctx.lineCap = "round";
         ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke();
+      }
+
+      // area chiara da studio: fondale curvo dietro l'auto + pavimento chiaro in prospettiva.
+      // Sta sopra griglia e scie (che ci "entrano" sfumando) e sotto pulviscolo e vignetta.
+      const st = typeof bg.studio === "number" ? bg.studio : studio;
+      if (st > 0) {
+        ctx.globalCompositeOperation = "source-over";
+        // su schermi verticali (telefono) la luce è più alta e scende verso i testi
+        const tall = H > W * 1.15;
+        const bx = box.x + box.w * 0.5, by = box.y + box.h * (tall ? 0.75 : 0.42);
+        const rr = tall ? Math.max(box.w * 1.05, H * 0.52) : box.w * 1.08, sy = tall ? 1.15 : 0.8;
+        g = ctx.createRadialGradient(bx, by, 0, bx, by, rr);
+        g.addColorStop(0, `rgba(249,250,251,${Math.min(1, 1.0 * st)})`);
+        g.addColorStop(0.4, `rgba(242,244,246,${0.92 * st})`);
+        g.addColorStop(0.68, `rgba(222,226,231,${0.5 * st})`);
+        g.addColorStop(0.88, `rgba(188,194,202,${0.14 * st})`);
+        g.addColorStop(1, "rgba(160,166,175,0)");
+        ctx.save(); ctx.translate(bx, by); ctx.scale(1, sy); ctx.translate(-bx, -by);
+        ctx.fillStyle = g; ctx.fillRect(bx - rr, by - rr, rr * 2, rr * 2); ctx.restore();
+        for (let i = 0; i < 28; i++) {                      // pavimento: strati che si sommano verso il centro
+          groundPoly(h, ellipse(CU, CV, 1.0 + i * 0.26, 0.8 + i * 0.2));
+          ctx.fillStyle = `rgba(244,246,248,${0.08 * st})`; ctx.fill();
+        }
+        // un velo del colore del modello sul bordo dell'area chiara
+        g = ctx.createRadialGradient(bx, by, rr * 0.55, bx, by, rr * 1.05);
+        g.addColorStop(0, `rgba(${acc},0)`); g.addColorStop(0.6, `rgba(${acc},${0.08 * st})`); g.addColorStop(1, `rgba(${acc},0)`);
+        ctx.save(); ctx.translate(bx, by); ctx.scale(1, sy * 0.9); ctx.translate(-bx, -by);
+        ctx.fillStyle = g; ctx.fillRect(bx - rr * 1.1, by - rr * 1.1, rr * 2.2, rr * 2.2); ctx.restore();
+        // la griglia continua, scura, anche sulla zona chiara sotto l'auto (sfuma verso il buio)
+        if (gridOnLight > 0) {
+          const lit = (u, w) => { const d = ((u - CU) / 7.5) ** 2 + ((w - CV) / 5.8) ** 2; return d >= 1 ? 0 : (1 - d) ** 1.2; };
+          grid(gridOnLight * st, "38,42,50", lit);
+        }
+        ctx.globalCompositeOperation = "lighter";
       }
 
       // pulviscolo
@@ -168,7 +206,8 @@
 
       ctx.globalCompositeOperation = "source-over";
       g = ctx.createRadialGradient(W / 2, H * 0.5, Math.min(W, H) * 0.3, W / 2, H * 0.5, Math.max(W, H) * 0.78);
-      g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,.8)");
+      // vignetta: più leggera con lo studio su schermi verticali, dove sopra e sotto c'è tanto spazio
+      g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, `rgba(0,0,0,${st > 0 && H > W * 1.15 ? .45 : .8})`);
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 
       if (debug && floorPts) {

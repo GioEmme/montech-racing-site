@@ -247,3 +247,25 @@
   background: rgba(7,8,11,.72); border-bottom-color: rgba(255,255,255,.06);
   backdrop-filter: blur(16px) saturate(1.2); -webkit-backdrop-filter: blur(16px) saturate(1.2);
 }
+
+/* ---------- fondo chiaro da studio (come l'hero della home) ---------- */
+.mhero--studio::after {        /* menu leggibile in alto, numeri leggibili in basso */
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(7,8,11,.78) 0%, rgba(7,8,11,.35) 9%, rgba(7,8,11,0) 17%),
+    linear-gradient(180deg, rgba(7,8,11,0) 70%, rgba(7,8,11,.75) 100%);
+}
+.mhero--studio .mhero__bigname { mix-blend-mode: difference; }
+.mhero--studio .mhero__copy, .mhero--studio .mhero__stats { text-shadow: 0 1px 14px rgba(0,0,0,.55); }
+.mhero--studio .car__lines { filter: brightness(0) invert(.22) opacity(.5); }
+.mhero--studio .car__scan {
+  background: linear-gradient(180deg, transparent, #2b2f36 18%, #2b2f36 82%, transparent);
+  box-shadow: 0 0 14px 3px rgba(var(--accent-rgb), .55), 0 0 50px 14px rgba(var(--accent-rgb), .2);
+}
+@media (max-width: 760px) {
+  .mhero--studio::after {
+    background:
+      linear-gradient(180deg, rgba(7,8,11,.78) 0%, rgba(7,8,11,.35) 9%, rgba(7,8,11,0) 17%),
+      linear-gradient(180deg, rgba(7,8,11,0) 52%, rgba(7,8,11,.45) 72%, rgba(7,8,11,.8) 100%);
+  }
+}

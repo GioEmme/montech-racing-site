@@ -64,9 +64,11 @@
 
   /* ------------------------------------------- hero: pista + ombra */
   const hero = $("mhero"), car = $("car"), spin = $("carSpin"), shCv = $("carShadow");
-  const floor = createFloor($("mheroBg"), { debug: DEBUG, reduce });
+  const STUDIO = new URLSearchParams(location.search).get("light") === "0" ? 0 : 1;   // fondo chiaro da studio (come in home)
+  const floor = createFloor($("mheroBg"), { debug: DEBUG, reduce, studio: STUDIO, vivid: 1.5, gridOnLight: 0.8 });
+  hero.classList.toggle("mhero--studio", STUDIO > 0);
   floor.bg.accent = m.accent.slice(); floor.bg.accentT = m.accent.slice();
-  floor.bg.speed = floor.bg.target = 0.6;               // qui la pista scorre più lenta
+  floor.bg.speed = floor.bg.target = 0.85;              // un po' più lenta che in home, ma ben visibile
   let DPR = 1;
   const resize = () => { DPR = floor.resize(); paintShadow(shCv, m, car.offsetWidth, car.offsetHeight, DPR, DEBUG); };
   addEventListener("resize", resize);
@@ -122,7 +124,7 @@
     anim(scan, [{ left: "0%", opacity: 0 }, { opacity: 1, offset: 0.08 }, { opacity: 1, offset: 0.9 }, { left: "100%", opacity: 0 }], { duration: S, easing: ease });
     anim(body, [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)" }], { duration: S, easing: ease });
     anim(lines, [{ clipPath: "inset(0 0 0 0%)" }, { clipPath: "inset(0 0 0 100%)" }], { duration: S, easing: ease });
-    anim(shCv, [{ opacity: 0 }, { opacity: 1 }], { duration: S * 1.1, easing: "ease-out" });
+    anim(shCv, [{ opacity: 0 }, { opacity: 1 }], { duration: reduce ? 1 : 550, delay: S, easing: "ease-out", fill: "both" });   // ombra solo a scansione finita
     await arrive.finished;
     countUps($("stats"));
   }

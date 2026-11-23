@@ -103,3 +103,11 @@
   .filters { top: 62px; }
 }
 @media (prefers-reduced-motion: reduce) { .card.is-new { animation: none; } }
+
+/* card su fondo chiaro da studio: numero leggibile anche sulla luce */
+.card__idx { text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+
+/* su telefono l'intestazione è più bassa: meno pavimento vuoto sopra il titolo */
+@media (max-width: 760px) {
+  .lhead { height: clamp(330px, 44vh, 400px); }
+}

@@ -126,6 +126,9 @@
     darlington: "Oval", "lc-2": "Pan Car", "lc-2-112": "Pan Car 1/12", "bm-h-112": "Pan Car 1/12",
   };
   MODELS.forEach((m) => (m.category = CATEGORY[m.id]));
+
+  /* tutto il resto del catalogo (js/models-more.js, generato): dati, testi e galleria già completi */
+  MODELS.push(...(window.MT_MORE || []));
   /* Dati della scheda tecnica: presi dalle pagine prodotto di mon-techracing.net.
      specs: [etichetta, valore, (true = riga intera)]  ·  kit: contenuto della confezione
      La pagina della Huracan non riporta dati: solo la categoria (dalla home).      */
@@ -216,7 +219,7 @@
       kit: ["Ala posteriore", "Viti di fissaggio", "Decal di fari e griglie", "Mascherature finestrini"],
     },
   };
-  MODELS.forEach((m) => Object.assign(m, SPECS[m.id]));
+  MODELS.forEach((m) => SPECS[m.id] && Object.assign(m, SPECS[m.id]));
 
   /* Contenuti della pagina modello (model.html?m=<id>): testi ufficiali delle
      pagine prodotto, punti di forza e numero di foto in assets/gallery/<id>_N.webp */
@@ -371,10 +374,13 @@
     },
   };
   MODELS.forEach((m) => {
-    Object.assign(m, PAGES[m.id]);
+    if (PAGES[m.id]) Object.assign(m, PAGES[m.id]);
     m.page = `model.html?m=${m.id}`;
     m.photos = Array.from({ length: m.gallery }, (_, i) => `assets/gallery/${m.id}_${i + 1}.webp`);
   });
+
+  // disegni tecnici rigenerati a tratto sottile: versione nell'indirizzo per superare la cache
+  MODELS.forEach((m) => (m.lines += "?v=2"));
 
   window.MT_MODELS = MODELS;
 })();

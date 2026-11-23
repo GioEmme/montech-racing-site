@@ -57,7 +57,7 @@
     const key = `${stage.clientWidth}x${stage.clientHeight}`;
     if (card._painted === key) return;
     card._painted = key;
-    const floor = card._floor || (card._floor = createFloor(card.querySelector(".card__bg"), { reduce: true }));
+    const floor = card._floor || (card._floor = createFloor(card.querySelector(".card__bg"), { reduce: true, studio: 1 }));
     floor.bg.accent = m.accent.slice(); floor.bg.accentT = m.accent.slice();
     const dpr = floor.resize();
     const w = box.offsetWidth, h = box.offsetHeight;
@@ -81,7 +81,7 @@
         const show = !cat || c.dataset.cat === cat;
         c.hidden = !show;
         c.classList.remove("is-new");
-        if (show) { c.style.setProperty("--d", `${n * 60}ms`); n++; }
+        if (show) { c.style.setProperty("--d", `${Math.min(n, 9) * 60}ms`); n++; }   // cascata solo sulle prime card
       });
       $("listCount").textContent = `${n} ${n === 1 ? "carrozzeria" : "carrozzerie"}${cat ? ` · ${cat}` : ""}`;
       cards.forEach((c) => !c.hidden && paintCard(c));

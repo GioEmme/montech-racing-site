@@ -52,7 +52,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     radial-gradient(42% 34% at 52% 52%, rgba(var(--accent-rgb), .20), transparent 70%),
-    radial-gradient(60% 40% at 50% 0%, rgba(255,255,255,.05), transparent 70%),
+    linear-gradient(180deg, rgba(7,8,11,.78) 0%, rgba(7,8,11,.35) 9%, rgba(7,8,11,0) 17%),   /* menu leggibile sopra il fondo chiaro */
     linear-gradient(180deg, rgba(7,8,11,.0) 60%, rgba(7,8,11,.85) 100%);
   transition: background 1.2s;
 }
@@ -67,6 +67,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   pointer-events: none; user-select: none; will-change: transform;
 }
 .hero__bigname span { display: inline-block; will-change: transform, opacity; }
+/* sul fondo chiaro da studio il contorno bianco sparirebbe: "difference" lo inverte dove c'è luce */
+.hero__bigname { mix-blend-mode: difference; }
 .hero__bigname .fill {
   position: absolute; inset: 0;
   color: transparent; -webkit-text-stroke: 0;
@@ -91,7 +93,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%;
   user-select: none;
 }
-.car__lines { opacity: 0; filter: drop-shadow(0 0 6px rgba(var(--accent-rgb), .9)); }
+.car__lines { opacity: 0; filter: drop-shadow(0 0 1px rgba(0,0,0,.75)) drop-shadow(0 0 6px rgba(var(--accent-rgb), .9)); }  /* bordo scuro: leggibile anche sul fondo chiaro */
 .car__body { clip-path: inset(0 100% 0 0); }
 /* ombra proiettata sul pavimento (disegnata in JS): sporge dal box del 30% per lato */
 .car__shadow {
@@ -348,4 +350,30 @@ body.menu-open { overflow: hidden; }
 }
 @media (max-width: 420px) {
   .nav__cta { padding: 9px 13px; font-size: 12px; }
+}
+
+/* fondo chiaro da studio: i testi dell'hero restano leggibili anche dove arriva la luce */
+.hud--left { text-shadow: 0 1px 14px rgba(0,0,0,.55); }
+@media (max-width: 760px) {
+  /* su telefono il pavimento chiaro arriva sotto i testi: la parte bassa torna scura */
+  .hero__glow {
+    background:
+      radial-gradient(42% 34% at 52% 52%, rgba(var(--accent-rgb), .20), transparent 70%),
+      linear-gradient(180deg, rgba(7,8,11,0) 58%, rgba(7,8,11,.3) 76%, rgba(7,8,11,.72) 100%);
+  }
+}
+
+/* hero con fondo chiaro da studio: disegno tecnico antracite e scansione scura */
+.hero--studio .car__lines { filter: brightness(0) invert(.22) opacity(.5); }   /* antracite, niente alone, tratto leggero */
+.hero--studio .car__scan {
+  background: linear-gradient(180deg, transparent, #2b2f36 18%, #2b2f36 82%, transparent);
+  box-shadow: 0 0 14px 3px rgba(var(--accent-rgb), .55), 0 0 50px 14px rgba(var(--accent-rgb), .2);
+}
+
+@media (max-width: 760px) {
+  /* velo scuro morbido solo dietro i testi: il resto del fondo resta chiaro */
+  .hero--studio .hud--left::before {
+    content: ""; position: absolute; z-index: -1; inset: -40px -16px -24px -16px; pointer-events: none;
+    background: radial-gradient(120% 90% at 30% 60%, rgba(7,8,11,.62), rgba(7,8,11,.32) 55%, transparent 78%);
+  }
 }

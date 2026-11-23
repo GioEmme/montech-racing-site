@@ -28,7 +28,10 @@
   MODELS.forEach((m) => { [m.img, m.lines].forEach((s) => { const i = new Image(); i.src = s; }); });
 
   /* ------------------------------------------------------------ sfondo */
-  const floor = window.MTStage.createFloor($("heroBg"), { debug: DEBUG, reduce });
+  // area chiara da studio dietro i modelli (?light=0 per confrontare con la versione tutta scura)
+  const STUDIO = new URLSearchParams(location.search).get("light") === "0" ? 0 : 1;
+  const floor = window.MTStage.createFloor($("heroBg"), { debug: DEBUG, reduce, studio: STUDIO });
+  hero.classList.toggle("hero--studio", STUDIO > 0);      // linee e scansione scure sul fondo chiaro
   const bg = floor.bg;                      // velocità e colore della pista
   bg.accent = MODELS[0].accent.slice(); bg.accentT = MODELS[0].accent.slice();
   const mouse = { x: 0, y: 0, sx: 0, sy: 0 };
@@ -232,7 +235,7 @@
     anim(scan, [{ left: "0%", opacity: 0 }, { opacity: 1, offset: 0.08 }, { opacity: 1, offset: 0.9 }, { left: "100%", opacity: 0 }], { duration: S, easing: ease });
     anim(imgBody, [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)" }], { duration: S, easing: ease });
     anim(imgLines, [{ clipPath: "inset(0 0 0 0%)", opacity: 1 }, { clipPath: "inset(0 0 0 100%)", opacity: 1 }], { duration: S, easing: ease });
-    anim(shCv, [{ opacity: 0 }, { opacity: 1 }], { duration: S * 1.1, easing: "ease-out" });
+    anim(shCv, [{ opacity: 0 }, { opacity: 1 }], { duration: reduce ? 1 : 550, delay: S, easing: "ease-out", fill: "both" });   // ombra solo a scansione finita
     await arrive.finished;
     await wait(reduce ? 0 : S - 450);
   }
