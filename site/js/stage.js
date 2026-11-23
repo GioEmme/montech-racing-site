@@ -150,7 +150,7 @@
         s.u += dt * v * 2.2 * s.mul * (1 + v * 0.2);
         if (s.u - s.len > CU + R) Object.assign(s, spawn(false));
         const A = P(h, s.u, s.v), B = P(h, s.u - s.len * (0.6 + v * 0.25), s.v);
-        if (A[2] <= 0.05 || B[2] <= 0.05) continue;
+        if (A[2] <= 0.05 || B[2] <= 0.05 || !isFinite(A[0] + A[1] + B[0] + B[1])) continue;
         const a = Math.min(1, fade(s.u, s.v) * (s.kind === "white" ? 0.5 : 1) * vivid);
         if (a < 0.01) continue;
         const c = s.kind === "accent" ? acc : s.kind === "alt" ? alt : "255,255,255";

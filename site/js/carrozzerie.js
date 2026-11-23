@@ -114,8 +114,8 @@
   new IntersectionObserver(([e]) => { headVisible = e.isIntersecting; }).observe(head);
   let last = performance.now();
   (function frame(now) {
-    const dt = Math.min((now - last) / 1000, 0.05); last = now;
-    if (headVisible) {
+    const dt = Math.min(Math.max((now - last) / 1000, 0), 0.05); last = now;
+    if (headVisible && head.clientWidth > 0) {
       // un'auto "virtuale" a destra: il pavimento ha la stessa prospettiva delle foto
       const W = head.clientWidth, H = head.clientHeight;
       const w = Math.min(W * 0.5, 820), h = w / 1.85;
