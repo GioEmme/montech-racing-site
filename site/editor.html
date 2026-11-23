@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Editor ruote — Mon-Tech Racing</title>
+  <style>
+    :root { --bg: #0b0c10; --panel: #14161c; --line: #262a33; --ink: #e9ecf1; --dim: #8a909c;
+            --fn: #ff3fd0; --rn: #22c7ff; --ff: #ff9b2f; --rf: #3ee07a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4 system-ui, -apple-system, sans-serif; display: grid; grid-template-columns: 260px 1fr; height: 100vh; overflow: hidden; }
+    aside { border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+    aside header { padding: 14px; border-bottom: 1px solid var(--line); }
+    aside h1 { font-size: 15px; margin: 0 0 10px; }
+    #q { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); }
+    #list { overflow: auto; flex: 1; padding: 6px; }
+    #list button { display: flex; justify-content: space-between; width: 100%; text-align: left; padding: 7px 10px; border: 0; border-radius: 7px; background: none; color: var(--ink); cursor: pointer; font: inherit; }
+    #list button:hover { background: var(--panel); }
+    #list button.on { background: #23324a; }
+    #list small { color: var(--dim); }
+    #list .done small { color: var(--rf); }
+    main { display: flex; flex-direction: column; min-width: 0; }
+    .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+    .bar .sep { flex: 1; }
+    .pt, .tg, .act { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 5px 10px; font-size: 13px; cursor: pointer; font: inherit; display: inline-flex; gap: 7px; align-items: center; }
+    .pt i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .pt.sel { outline: 2px solid #fff; }
+    .pt.c2 i { background: transparent !important; border: 2px solid currentColor; }
+    .tg.on { background: #23324a; border-color: #3a5684; }
+    .act { background: #2a6df4; border-color: #2a6df4; }
+    #status { color: var(--dim); min-width: 90px; }
+    #sizeBox:not([hidden]), #tolBox:not([hidden]) { display: inline-flex; gap: 6px; align-items: center; color: var(--dim); }
+    [hidden] { display: none !important; }
+    #stage.check { background: #ff00ff; }
+    #stage.check #floor, #stage.check #shadow { visibility: hidden; }
+    #stage.wand { cursor: cell; }
+    #stage.brush { cursor: none; }
+    #stage.wand .h, #stage.wand .x, #stage.brush .h, #stage.brush .x { pointer-events: none; opacity: .35; }
+    #orig { position: absolute; pointer-events: none; opacity: .4; }
+    #paint { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    #stage.wand .h, #stage.wand .x { pointer-events: none; opacity: .35; }
+    #stage { position: relative; flex: 1; overflow: hidden; background: #0b0c10; cursor: crosshair; }
+    #floor { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #shadow, #img { position: absolute; pointer-events: none; }
+    #img { object-fit: fill; }
+    .h { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.5); cursor: grab; touch-action: none; }
+    .h::after { content: attr(data-k); position: absolute; left: 22px; top: -4px; font: 600 11px/1 system-ui; color: #fff; text-shadow: 0 1px 3px #000; white-space: nowrap; }
+    .h.c2 { background: transparent !important; border-width: 3px; }
+    .h.sel { transform: scale(1.25); }
+    .x { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; background: #fff; border: 2px solid #111; border-radius: 3px; transform: rotate(45deg); cursor: move; touch-action: none; opacity: .85; }
+    .x::after { content: attr(data-k); position: absolute; left: 14px; top: -14px; transform: rotate(-45deg); transform-origin: left; font: 600 10px/1 system-ui; color: #111; background: rgba(255,255,255,.8); padding: 2px 4px; border-radius: 3px; white-space: nowrap; }
+    #help { padding: 8px 14px; color: var(--dim); border-top: 1px solid var(--line); font-size: 13px; }
+    #help b { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <aside>
+    <header>
+      <h1>Editor ruote</h1>
+      <input id="q" placeholder="Cerca carrozzeria…" autocomplete="off">
+    </header>
+    <div id="list"></div>
+  </aside>
+  <main>
+    <div class="bar" id="points"></div>
+    <div class="bar">
+      <button class="tg" id="two">Due auto in foto</button>
+      <button class="tg on" id="showCar">Mostra auto</button>
+      <button class="tg" id="showLines">Disegno tecnico</button>
+      <button class="tg" id="fuchsia">Sfondo fucsia</button>
+      <button class="tg tool" id="wand" data-tool="wand">🪄 Togli fondo</button>
+      <button class="tg tool" id="restore" data-tool="restore">🖌 Ripristina</button>
+      <button class="tg tool" id="erase" data-tool="erase">⌫ Cancella</button>
+      <button class="tg" id="showOrig">Foto originale</button>
+      <button class="tg" id="pad" title="Aggiunge spazio trasparente attorno alla foto, per ripristinare parti tagliate dal bordo">⤢ Allarga tela</button>
+      <label id="tolBox" hidden>Tolleranza <input type="range" id="tol" min="5" max="90" value="30"><b id="tolV" style="color:var(--ink);min-width:2ch">30</b></label>
+      <label id="sizeBox" hidden>Pennello <input type="range" id="size" min="3" max="60" value="14"><b id="sizeV" style="color:var(--ink);min-width:2ch">14</b></label>
+      <button class="tg" id="undo" hidden>↶ Annulla</button>
+      <span class="sep"></span>
+      <button class="act" id="reset">Ripristina punti di partenza</button>
+      <a class="act" id="open" target="_blank" style="text-decoration:none">Apri pagina ↗</a>
+      <span id="status"></span>
+    </div>
+    <div id="stage">
+      <canvas id="floor"></canvas>
+      <canvas id="shadow"></canvas>
+      <img id="img" alt="">
+      <img id="orig" alt="" hidden>
+      <canvas id="paint"></canvas>
+    </div>
+    <div id="help">
+      Scegli un punto in alto e <b>clicca sulla foto</b> dove la gomma tocca terra (il punto passa da solo al successivo), oppure <b>trascina</b> i pallini.
+      <b>Vicina</b> = lato verso di te, <b>lontana</b> = lato opposto (anche se nascosta, mettila dove sarebbe).
+      I <b>rombi bianchi</b> allungano o accorciano l'ombra (avanti, dietro, ai lati). Con <b>🖌 Ripristina</b> ripassi le parti mangiate dallo scontorno (torna la foto originale; <b>Foto originale</b> la mostra in trasparenza), con <b>⌫ Cancella</b> togli a pennello (<b>Shift + clic</b> = linea retta dall'ultimo punto); se la parte mangiata esce dal bordo della foto usa prima <b>⤢ Allarga tela</b>. Con <b>🪄 Togli fondo</b> clicchi su un pezzo di sfondo rimasto e diventa trasparente (la tolleranza decide quanto si allarga). Si salva da solo.
+    </div>
+  </main>
+
+  <script src="js/models-more.js?v=1795468393"></script>
+  <script>window.MT_EDITOR = true;</script>
+  <script src="js/contacts-fix.js?v=1795468393"></script>
+  <script src="js/crops-fix.js?v=1795468393"></script>
+  <script src="js/models.js?v=1795468393"></script>
+  <script src="js/stage.js?v=1795468393"></script>
+  <script src="js/editor.js?v=1795468393"></script>
+</body>
+</html>

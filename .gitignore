@@ -13,3 +13,8 @@ __pycache__/
 /camaro_body.png
 /huracan_body.png
 /camaro_prima_dopo.png
+
+# ambiente Python locale (editor e strumenti)
+.venv/
+sources/bodies/.undo/
+sources/originals/

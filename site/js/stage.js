@@ -42,8 +42,8 @@
     const s = Math.min(bw / m.nat[0], bh / m.nat[1]);
     return { s, ox: (bw - m.nat[0] * s) / 2, oy: bh - m.nat[1] * s };
   }
-  function contactsIn(m, bw, bh, x0 = 0, y0 = 0) {
-    const f = imageFrame(m, bw, bh), c = m.contact;
+  function contactsIn(m, bw, bh, x0 = 0, y0 = 0, c = m.contact) {
+    const f = imageFrame(m, bw, bh);
     return [c.fn, c.rn, c.ff, c.rf].map(([x, y]) => [x0 + f.ox + x * f.s, y0 + f.oy + y * f.s]);
   }
   function axis(m) {                        // versore ruota posteriore -> anteriore (direzione del muso)
@@ -227,23 +227,35 @@
     canvas.width = cw * DPR; canvas.height = ch * DPR;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.clearRect(0, 0, cw, ch);
-    const pts = contactsIn(m, bw, bh, bw * PAD, bh * PAD), h = solveH(GROUND, pts);
-    const fill = (poly, a) => {
-      ctx.beginPath();
-      poly.forEach(([u, v], i) => { const [x, y] = P(h, u, v); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
-      ctx.closePath(); ctx.fillStyle = `rgba(0,0,0,${a})`; ctx.fill();
-    };
     const rrect = (u0, u1, v0, v1, r, n = 10) => {
       const out = [], arc = (cu, cv, a0) => { for (let i = 0; i <= n; i++) { const t = a0 + (i / n) * Math.PI / 2; out.push([cu + Math.cos(t) * r, cv + Math.sin(t) * r]); } };
       arc(u1 - r, v1 - r, 0); arc(u0 + r, v1 - r, Math.PI / 2); arc(u0 + r, v0 + r, Math.PI); arc(u1 - r, v0 + r, Math.PI * 1.5);
       return out;
     };
-    for (let i = 0; i < 18; i++) {                      // ombra d'ambiente sotto la scocca
-      const e = -0.18 + i * 0.045;
-      fill(rrect(-0.42 - e, WB + 0.48 + e, -0.05 - e, 1.05 + e, Math.max(0.05, 0.3 + e)), 0.07);
-    }
-    for (const [u, v] of [[0, 0.07], [WB, 0.07], [0, 0.93], [WB, 0.93]]) {   // contatto gomme
-      for (let i = 0; i < 9; i++) fill(ellipse(u, v, 0.1 + i * 0.022, 0.06 + i * 0.016, 28), 0.15);
+    // una prospettiva (e un'ombra) per ogni auto della foto: m.contact e, se c'è, m.contact2
+    let pts = null;
+    for (const c of [m.contact, m.contact2].filter(Boolean)) {
+      const p = contactsIn(m, bw, bh, bw * PAD, bh * PAD, c), h = solveH(GROUND, p);
+      // c.ext: quanto allungare l'ombra (unità del terreno) avanti, dietro, lato vicino, lato lontano
+      const x = { f: 0, r: 0, n: 0, o: 0, ...(c.ext || {}) };
+      pts = pts || p;
+      const fill = (poly, a) => {
+        ctx.beginPath();
+        poly.forEach(([u, v], i) => { const [x, y] = P(h, u, v); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+        ctx.closePath(); ctx.fillStyle = `rgba(0,0,0,${a})`; ctx.fill();
+      };
+      // ombra compatta e molto sfumata: sta sotto la scocca, senza scalini tra gli strati
+      ctx.save();
+      ctx.filter = `blur(${Math.max(4, bw * 0.03)}px)`;
+      ctx.translate(0, bh * 0.012);
+      for (let i = 0; i < 14; i++) {                    // ombra d'ambiente sotto la scocca
+        const e = -0.15 + i * 0.03;
+        fill(rrect(-0.3 - e - x.f, WB + 0.34 + e + x.r, 0.02 - e - x.n, 0.98 + e + x.o, Math.max(0.05, 0.25 + e)), 0.075);
+      }
+      for (const [u, v] of [[0, 0.1], [WB, 0.1], [0, 0.9], [WB, 0.9]]) {   // contatto gomme, verso l'interno
+        for (let i = 0; i < 9; i++) fill(ellipse(u, v, 0.08 + i * 0.02, 0.05 + i * 0.014, 28), 0.09);
+      }
+      ctx.restore();
     }
     // sfuma tutto a zero prima dei bordi del canvas: con prospettive marcate
     // gli strati esterni escono dal riquadro e verrebbero tagliati di netto
@@ -257,5 +269,5 @@
     if (debug) { ctx.fillStyle = "#f0f"; pts.forEach(([x, y]) => ctx.fillRect(x - 3, y - 3, 6, 6)); }
   }
 
-  window.MTStage = { WB, GROUND, solveH, P, imageFrame, contactsIn, axis, ellipse, createFloor, paintShadow };
+  window.MTStage = { SHADOW_BOX: { f: -0.4, r: WB + 0.44, n: -0.08, o: 1.08 }, WB, GROUND, solveH, P, imageFrame, contactsIn, axis, ellipse, createFloor, paintShadow };
 })();

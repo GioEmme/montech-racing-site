@@ -382,5 +382,27 @@
   // disegni tecnici rigenerati a tratto sottile: versione nell'indirizzo per superare la cache
   MODELS.forEach((m) => (m.lines += "?v=2"));
 
+  // punti ruota segnati a mano nell'editor (editor.html -> js/contacts-fix.js): hanno la precedenza
+  const FIX = window.MT_CONTACTS || {};
+  MODELS.forEach((m) => {
+    const f = FIX[m.id];
+    if (!f) return;
+    if (f.nat) m.nat = f.nat;                    // tela allargata nell'editor
+    if (f.contact) m.contact = f.contact;
+    m.contact2 = f.contact2 || null;
+  });
+
+  // immagini web ritagliate dall'editor dopo "Allarga tela": punti e misura passano alle coordinate del ritaglio
+  // (l'editor lavora sul file intero e lo salta: window.MT_EDITOR)
+  const CROPS = window.MT_CROPS || {};
+  if (!window.MT_EDITOR) MODELS.forEach((m) => {
+    const c = CROPS[m.id];
+    if (!c) return;
+    const [x0, y0, w, h] = c;
+    for (const ct of [m.contact, m.contact2].filter(Boolean))
+      for (const k of ["fn", "rn", "ff", "rf"]) ct[k] = [ct[k][0] - x0, ct[k][1] - y0];
+    m.nat = [w, h];
+  });
+
   window.MT_MODELS = MODELS;
 })();
